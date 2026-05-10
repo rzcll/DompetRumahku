@@ -8,144 +8,68 @@
   
   <style>
     /* ==========================================
-       RESET & UNIVERSAL STYLES (Agar rapi di semua HP)
+       RESET & UNIVERSAL STYLES
        ========================================== */
     *, *::before, *::after {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* VARIABLES & THEMES */
     :root {
       --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-      --text-color: #1e293b; 
-      --glass-bg: rgba(255, 255, 255, 0.85); 
-      --glass-border: rgba(255, 255, 255, 1);
-      --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.25); 
-      --accent-color: #3b82f6; 
-      --input-bg: rgba(255, 255, 255, 0.95);
-      --dropdown-bg: #ffffff; 
-      --element-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); 
-      --input-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --text-color: #1e293b; --glass-bg: rgba(255, 255, 255, 0.85); --glass-border: rgba(255, 255, 255, 1);
+      --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.25); --accent-color: #3b82f6; --input-bg: rgba(255, 255, 255, 0.95);
+      --dropdown-bg: #ffffff; --element-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); --input-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       --select-arrow: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231e293b"><path d="M7 10l5 5 5-5z"/></svg>');
       --rp-color: #64748b; 
     }
     
     [data-theme="dark"] {
       --bg-gradient: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-      --text-color: #f8fafc; 
-      --glass-bg: rgba(15, 23, 42, 0.8); 
-      --glass-border: rgba(255, 255, 255, 0.15);
-      --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); 
-      --accent-color: #60a5fa; 
-      --input-bg: rgba(30, 41, 59, 0.9);
-      --dropdown-bg: #1e293b; 
-      --element-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-      --input-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --text-color: #f8fafc; --glass-bg: rgba(15, 23, 42, 0.8); --glass-border: rgba(255, 255, 255, 0.15);
+      --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); --accent-color: #60a5fa; --input-bg: rgba(30, 41, 59, 0.9);
+      --dropdown-bg: #1e293b; --element-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); --input-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       --select-arrow: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f8fafc"><path d="M7 10l5 5 5-5z"/></svg>');
       --rp-color: #ffffff; 
     }
     
-    body {
-      margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      background: var(--bg-gradient); color: var(--text-color); 
-      min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 20px;
-    }
-
-    /* CONTAINER UTAMA */
-    .app-container {
-      width: 100%; max-width: 500px; background: var(--glass-bg); 
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border); border-radius: 24px; 
-      box-shadow: var(--glass-shadow); padding: 25px; position: relative; 
-    }
-    
-    .loading-overlay, .pin-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); color: white;
-    }
+    body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-gradient); color: var(--text-color); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 20px; }
+    .app-container { width: 100%; max-width: 500px; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; box-shadow: var(--glass-shadow); padding: 25px; position: relative; }
+    .loading-overlay, .pin-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); color: white; }
     .loading-overlay.hidden, .pin-overlay.hidden { display: none; }
-    
-    /* TOAST NOTIFICATION */
     .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
     .toast { background: rgba(239, 68, 68, 0.95); color: white; padding: 15px 20px; border-radius: 12px; box-shadow: var(--glass-shadow); display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 0.9rem; max-width: 300px; animation: slideIn 0.4s ease forwards; }
-    .toast.yellow { background: rgba(245, 158, 11, 0.95); }
-    .toast.green { background: rgba(16, 185, 129, 0.95); }
+    .toast.yellow { background: rgba(245, 158, 11, 0.95); } .toast.green { background: rgba(16, 185, 129, 0.95); }
     @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-    /* HEADER */
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .header h2 { margin: 0; font-weight: 800; font-size: 1.3rem; letter-spacing: 0.5px;}
-    
-    .controls button { 
-      background: var(--input-bg); border: 1px solid var(--glass-border); 
-      border-radius: 50%; width: 38px; height: 38px; color: var(--text-color); 
-      cursor: pointer; margin-left: 6px; transition: all 0.3s ease; 
-      box-shadow: var(--input-shadow); display: flex; justify-content: center; align-items: center;
-    }
+    .controls button { background: var(--input-bg); border: 1px solid var(--glass-border); border-radius: 50%; width: 38px; height: 38px; color: var(--text-color); cursor: pointer; margin-left: 6px; transition: all 0.3s ease; box-shadow: var(--input-shadow); display: flex; justify-content: center; align-items: center; }
     .controls button:hover { background: var(--accent-color); color: white; transform: translateY(-3px); box-shadow: var(--element-shadow); }
     
-    /* MENU TAB NAVIGASI */
-    .tab-nav { 
-      display: flex; gap: 6px; margin-bottom: 25px; 
-      background: var(--glass-bg); padding: 8px; border-radius: 16px; 
-      border: 1px solid var(--glass-border); overflow-x: auto;
-      box-shadow: var(--element-shadow); 
-      -ms-overflow-style: none; /* Sembunyikan scrollbar IE/Edge */
-      scrollbar-width: none; /* Sembunyikan scrollbar Firefox */
-    }
-    .tab-nav::-webkit-scrollbar { display: none; } /* Sembunyikan scrollbar Chrome/Safari */
-    
-    .tab-btn { 
-      flex: 1; padding: 12px 10px; border: none; background: transparent; 
-      color: var(--text-color); font-weight: 700; font-size: 0.85rem; 
-      border-radius: 10px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; 
-    }
+    .tab-nav { display: flex; gap: 6px; margin-bottom: 25px; background: var(--glass-bg); padding: 8px; border-radius: 16px; border: 1px solid var(--glass-border); overflow-x: auto; box-shadow: var(--element-shadow); -ms-overflow-style: none; scrollbar-width: none; }
+    .tab-nav::-webkit-scrollbar { display: none; } 
+    .tab-btn { flex: 1; padding: 12px 10px; border: none; background: transparent; color: var(--text-color); font-weight: 700; font-size: 0.85rem; border-radius: 10px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
     .tab-btn.active { background: var(--accent-color); color: white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
     .tab-content { display: none; } .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* DASHBOARD SALDO */
-    .balance-card { 
-      background: linear-gradient(135deg, var(--accent-color), #2563eb); 
-      color: white; padding: 25px 20px; border-radius: 20px; text-align: center; 
-      margin-bottom: 25px; box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4); 
-    }
+    .balance-card { background: linear-gradient(135deg, var(--accent-color), #2563eb); color: white; padding: 25px 20px; border-radius: 20px; text-align: center; margin-bottom: 25px; box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4); }
     .balance-amount { font-size: 2.2rem; font-weight: 800; margin: 10px 0; transition: filter 0.3s ease; line-height: 1.1; }
     .privacy-active .balance-amount, .privacy-active .trx-amount { filter: blur(8px); user-select: none; }
     
-    /* TOGGLE PEMASUKAN/PENGELUARAN */
     .type-toggle { display: flex; gap: 10px; margin-bottom: 20px; }
     .type-toggle input[type="radio"] { display: none; }
-    .toggle-btn { 
-      flex: 1; padding: 14px 10px; text-align: center; border-radius: 14px; 
-      font-weight: 800; font-size: 0.9rem; cursor: pointer; border: 2px solid var(--glass-border);
-      background: var(--input-bg); color: var(--text-color); 
-      transition: all 0.3s ease; box-shadow: var(--input-shadow);
-      display: flex; justify-content: center; align-items: center; gap: 6px;
-    }
+    .toggle-btn { flex: 1; padding: 14px 10px; text-align: center; border-radius: 14px; font-weight: 800; font-size: 0.9rem; cursor: pointer; border: 2px solid var(--glass-border); background: var(--input-bg); color: var(--text-color); transition: all 0.3s ease; box-shadow: var(--input-shadow); display: flex; justify-content: center; align-items: center; gap: 6px; }
     .type-toggle input[id="typeOut"]:checked + label { background: #ef4444; color: white; border-color: #ef4444; box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4); transform: translateY(-3px); }
     .type-toggle input[id="typeIn"]:checked + label { background: #10b981; color: white; border-color: #10b981; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4); transform: translateY(-3px); }
 
-    /* FORM & INPUT */
     .form-row { display: flex; gap: 15px; width: 100%; }
     .form-group { margin-bottom: 18px; width: 100%; }
     .form-group label { display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: 700; opacity: 0.9; }
-    
-    /* Font size 16px mutlak diperlukan agar iPhone tidak auto-zoom */
-    .form-group input:not([type="radio"]), .form-group select, .form-group textarea {
-      width: 100%; padding: 14px 16px; border-radius: 12px; 
-      border: 1px solid var(--glass-border); 
-      background: var(--input-bg); color: var(--text-color); 
-      font-size: 16px; font-weight: 600; box-sizing: border-box; 
-      outline: none; transition: all 0.3s ease; font-family: inherit;
-      box-shadow: var(--input-shadow);
-    }
-    
+    .form-group input:not([type="radio"]), .form-group select, .form-group textarea { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-color); font-size: 16px; font-weight: 600; box-sizing: border-box; outline: none; transition: all 0.3s ease; font-family: inherit; box-shadow: var(--input-shadow); }
     .form-group select { cursor: pointer; appearance: none; -webkit-appearance: none; background-image: var(--select-arrow); background-repeat: no-repeat; background-position: right 15px center; background-size: 20px; padding-right: 40px; }
     .form-group select option { background-color: var(--dropdown-bg); color: var(--text-color); font-weight: 600; }
-    
     input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(var(--invert-icon, 1)); cursor: pointer; } [data-theme="light"] { --invert-icon: 0; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent-color); transform: translateY(-2px); box-shadow: var(--element-shadow); }
     
@@ -153,67 +77,27 @@
     .input-rupiah-container span { position: absolute; left: 16px; font-weight: 800; color: var(--rp-color); transition: color 0.3s ease; }
     .input-rupiah-container input { padding-left: 45px !important; } 
 
-    .btn-submit { 
-      width: 100%; padding: 16px; border: none; border-radius: 14px; 
-      background: var(--accent-color); color: white; font-size: 1.05rem; 
-      font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); transition: all 0.3s ease; 
-      display: flex; justify-content: center; align-items: center; gap: 8px;
-    }
+    .btn-submit { width: 100%; padding: 16px; border: none; border-radius: 14px; background: var(--accent-color); color: white; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 8px; }
     .btn-submit:hover { background: #1d4ed8; transform: translateY(-3px); box-shadow: 0 14px 30px rgba(59, 130, 246, 0.5); }
     
-    /* LIST & ITEMS */
     .wallet-list { display: flex; flex-direction: column; gap: 15px; max-height: 280px; overflow-y: auto; padding-right: 5px; padding-bottom: 10px; }
-    .wallet-item { 
-      display: flex; justify-content: space-between; align-items: center; 
-      background: var(--input-bg); padding: 16px 20px; border-radius: 16px; 
-      border: 1px solid var(--glass-border); box-shadow: var(--element-shadow); transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+    .wallet-item { display: flex; justify-content: space-between; align-items: center; background: var(--input-bg); padding: 16px 20px; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--element-shadow); transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .wallet-item:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); }
-
     .progress-container { background: rgba(0,0,0,0.05); border-radius: 10px; width: 100%; height: 14px; margin-top: 12px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
     [data-theme="dark"] .progress-container { background: rgba(255,255,255,0.1); }
     .progress-bar { height: 100%; border-radius: 10px; transition: width 0.8s ease; }
     .bg-green { background: #10b981; } .bg-yellow { background: #f59e0b; } .bg-red { background: #ef4444; }
-
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 10px; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 10px; }
     [data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
 
-    /* ==========================================
-       MEDIA QUERIES (OPTIMASI KHUSUS SMARTPHONE)
-       ========================================== */
     @media screen and (max-width: 480px) {
-      body {
-        padding: 0; /* Menghilangkan jarak sisi layar agar Full-Screen */
-      }
-      .app-container {
-        border-radius: 0; /* Sudut rata seperti aplikasi native */
-        border: none;
-        min-height: 100vh;
-        padding: 20px 15px;
-      }
-      .balance-amount { font-size: 1.9rem; } /* Ukuran dikecilkan agar tidak patah */
-      .header h2 { font-size: 1.15rem; }
-      .tab-btn { font-size: 0.8rem; padding: 10px 8px; }
-      
-      /* Mengubah kolom yang bersebelahan menjadi bertumpuk vertikal */
-      .form-row { flex-direction: column; gap: 0; }
-      .form-row .form-group { margin-bottom: 18px; }
-      
-      /* Menengah-kan notifikasi di layar HP */
-      .toast-container {
-        top: 15px; right: 0; left: 0;
-        align-items: center;
-        pointer-events: none; /* Agar tidak menghalangi klik */
-      }
+      body { padding: 0; }
+      .app-container { border-radius: 0; border: none; min-height: 100vh; padding: 20px 15px; }
+      .balance-amount { font-size: 1.9rem; } .header h2 { font-size: 1.15rem; } .tab-btn { font-size: 0.8rem; padding: 10px 8px; }
+      .form-row { flex-direction: column; gap: 0; } .form-row .form-group { margin-bottom: 18px; }
+      .toast-container { top: 15px; right: 0; left: 0; align-items: center; pointer-events: none; }
       .toast { max-width: 90%; width: auto; justify-content: center; }
-      
-      /* Mengatur rincian teks di daftar laporan agar tidak bertumpuk */
-      .wallet-item { padding: 14px 15px; }
-      .trx-detail h5 { font-size: 0.95rem !important; }
-      .trx-detail p { font-size: 0.75rem !important; }
-      .trx-amount { font-size: 1.05rem !important; }
+      .wallet-item { padding: 14px 15px; } .trx-detail h5 { font-size: 0.95rem !important; } .trx-detail p { font-size: 0.75rem !important; } .trx-amount { font-size: 1.05rem !important; }
     }
   </style>
 </head>
@@ -221,7 +105,7 @@
 
   <div class="loading-overlay" id="loadingOverlay">
     <i class="fa-solid fa-wallet fa-bounce" style="font-size: 3rem; color: #3b82f6; margin-bottom: 20px;"></i>
-    <h3 style="margin:0; font-weight: 700; letter-spacing: 1px;">Memuat Data...</h3>
+    <h3 style="margin:0; font-weight: 700; letter-spacing: 1px;" id="loadingText">Menghubungkan Server...</h3>
   </div>
 
   <div class="pin-overlay hidden" id="pinOverlay">
@@ -235,7 +119,6 @@
   <div id="toastContainer" class="toast-container"></div>
 
   <div class="app-container" id="appBody">
-    
     <div class="header">
       <h2><i class="fa-solid fa-wallet" style="color: var(--accent-color);"></i> DOMPET RUMAH</h2>
       <div class="controls">
@@ -257,35 +140,28 @@
       <button class="tab-btn" onclick="openTab('tab-anggaran', this)"><i class="fa-solid fa-bullseye"></i> Budget</button>
     </div>
 
-    <!-- TAB 1: TRANSAKSI -->
+    <!-- TAB TRANSAKSI -->
     <div id="tab-transaksi" class="tab-content active">
       <form id="trxForm" onsubmit="submitTransaction(event)">
-        
         <div class="type-toggle">
           <input type="radio" id="typeOut" name="tipeTrx" value="Pengeluaran" checked onchange="updateCategories()">
           <label for="typeOut" class="toggle-btn out-btn"><i class="fa-solid fa-arrow-trend-down"></i> Keluar</label>
-          
           <input type="radio" id="typeIn" name="tipeTrx" value="Pemasukan" onchange="updateCategories()">
           <label for="typeIn" class="toggle-btn in-btn"><i class="fa-solid fa-arrow-trend-up"></i> Masuk</label>
         </div>
-
         <div class="form-row">
           <div class="form-group"><label>Disimpan Ke / Diambil Dari</label><select id="dompetTrx"></select></div>
           <div class="form-group"><label>Kategori</label><select id="kategori"></select></div>
         </div>
-        
         <div class="form-group">
           <label>Nominal</label>
-          <div class="input-rupiah-container">
-            <span>Rp</span>
-            <input type="text" inputmode="numeric" id="nominalTrx" oninput="formatRupiah(this)" placeholder="0" required>
-          </div>
+          <div class="input-rupiah-container"><span>Rp</span><input type="text" inputmode="numeric" id="nominalTrx" oninput="formatRupiah(this)" placeholder="0" required></div>
         </div>
         <button type="submit" class="btn-submit" id="btnSimpan"><i class="fa-solid fa-paper-plane"></i> Simpan Transaksi</button>
       </form>
     </div>
 
-    <!-- TAB 2: TRANSFER -->
+    <!-- TAB TRANSFER -->
     <div id="tab-transfer" class="tab-content">
       <form id="transferForm" onsubmit="submitTransfer(event)">
         <div class="form-row">
@@ -294,16 +170,13 @@
         </div>
         <div class="form-group">
           <label>Nominal Transfer</label>
-          <div class="input-rupiah-container">
-            <span>Rp</span>
-            <input type="text" inputmode="numeric" id="nominalTransfer" oninput="formatRupiah(this)" placeholder="0" required>
-          </div>
+          <div class="input-rupiah-container"><span>Rp</span><input type="text" inputmode="numeric" id="nominalTransfer" oninput="formatRupiah(this)" placeholder="0" required></div>
         </div>
         <button type="submit" class="btn-submit" id="btnTransfer"><i class="fa-solid fa-money-bill-transfer"></i> Proses Transfer</button>
       </form>
     </div>
 
-    <!-- TAB 3: LAPORAN -->
+    <!-- TAB LAPORAN -->
     <div id="tab-laporan" class="tab-content">
       <div class="form-row">
         <div class="form-group"><label>Dari Tanggal</label><input type="date" id="startDate"></div>
@@ -313,17 +186,14 @@
       <div id="reportList" class="wallet-list"></div>
     </div>
 
-    <!-- TAB 4: BUDGET -->
+    <!-- TAB BUDGET -->
     <div id="tab-anggaran" class="tab-content">
       <form id="budgetForm" onsubmit="submitBudget(event)" style="margin-bottom: 25px; border-bottom: 1px solid var(--glass-border); padding-bottom: 25px;">
         <div class="form-row">
           <div class="form-group"><label>Kategori</label><select id="budgetKategori"></select></div>
           <div class="form-group">
             <label>Batas Anggaran</label>
-            <div class="input-rupiah-container">
-              <span>Rp</span>
-              <input type="text" inputmode="numeric" id="budgetNominal" oninput="formatRupiah(this)" placeholder="0" required>
-            </div>
+            <div class="input-rupiah-container"><span>Rp</span><input type="text" inputmode="numeric" id="budgetNominal" oninput="formatRupiah(this)" placeholder="0" required></div>
           </div>
         </div>
         <button type="submit" class="btn-submit" id="btnBudget"><i class="fa-solid fa-plus"></i> Simpan Anggaran</button>
@@ -332,11 +202,11 @@
       <div class="wallet-list" id="budgetList"></div>
     </div>
 
-    <!-- TAB 5: PENGATURAN -->
+    <!-- TAB PENGATURAN -->
     <div id="tab-pengaturan" class="tab-content">
       <h3 style="margin-top:0; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; font-weight: 800;"><i class="fa-solid fa-gear"></i> Konfigurasi Sistem</h3>
       <div style="background: rgba(59, 130, 246, 0.1); border-left: 4px solid var(--accent-color); padding: 12px 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.85rem; box-shadow: var(--input-shadow); line-height: 1.4;">
-        <b>Petunjuk:</b> Pisahkan nama dengan tanda koma (,) jika mengisi lebih dari satu opsi (Contoh: BCA,Mandiri,Tunai).
+        <b>Petunjuk API:</b> Pastikan URL Web App diisi pada kode Javascript di bawah agar terhubung ke Google Sheet.
       </div>
       <form id="settingsForm" onsubmit="submitSettings(event)">
         <div class="form-group"><label><i class="fa-solid fa-key"></i> PIN Login Baru</label><input type="text" inputmode="numeric" id="setPIN" required></div>
@@ -350,23 +220,37 @@
   </div>
 
   <script>
+    // ==========================================
+    // PASTE URL WEB APP GOOGLE SCRIPT ANDA DI SINI
+    // ==========================================
+    const API_URL = "https://script.google.com/macros/s/AKfycbxW2RcQ98uwd66gbxzEKOEeIN0DAymhkmTaA4IWQf7KcRoLj57dvwgnjwLTcW-vmoo47Q/execI"; 
+
     let appSettings = {};
 
-    function formatRupiah(input) {
-      let value = input.value.replace(/[^0-9]/g, '');
-      input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    // --- FUNGSI JEMBATAN KE GOOGLE SCRIPT ---
+    function callBackend(actionName, dataPayload = null) {
+      if(API_URL === "MASUKKAN_URL_WEB_APP_DI_SINI") {
+        alert("PERHATIAN: URL Web App Google Script belum dimasukkan ke dalam file HTML!");
+        return Promise.reject("URL missing");
+      }
+      return fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: actionName, data: dataPayload })
+      }).then(res => res.json());
     }
 
-    function getTipeTrx() {
-      return document.querySelector('input[name="tipeTrx"]:checked').value;
-    }
+    // --- FUNGSI UI ---
+    function formatRupiah(input) { let value = input.value.replace(/[^0-9]/g, ''); input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, "."); }
+    function getTipeTrx() { return document.querySelector('input[name="tipeTrx"]:checked').value; }
 
     document.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().split('T')[0];
       if(document.getElementById('startDate')) document.getElementById('startDate').value = today;
       if(document.getElementById('endDate')) document.getElementById('endDate').value = today;
       
-      google.script.run.withSuccessHandler(function(res) {
+      // Mengambil data menggunakan Fetch API (bukan lagi google.script.run)
+      callBackend('getInitialData')
+      .then(function(res) {
         appSettings = res.settings;
         updateBalanceUI(res.netWorth);
         document.getElementById('setPIN').value = appSettings.PIN || '1234';
@@ -377,45 +261,35 @@
         document.getElementById('loadingOverlay').classList.add('hidden');
         document.getElementById('pinOverlay').classList.remove('hidden');
         document.getElementById('pinInput').focus();
-      }).getInitialData();
+      }).catch(err => {
+        document.getElementById('loadingText').innerText = "Koneksi Gagal. Cek URL Web App!";
+      });
     });
 
     function updateBalanceUI(amount) {
       const el = document.getElementById('totalKekayaan');
       if (amount === null || amount === undefined || amount === 0) {
         el.innerText = "Belum Ada Saldo"; el.style.fontSize = "1.5rem"; el.style.opacity = "0.8";
-      } else {
-        el.innerText = "Rp " + Number(amount).toLocaleString('id-ID'); el.style.fontSize = "2.2rem"; el.style.opacity = "1";
-      }
+      } else { el.innerText = "Rp " + Number(amount).toLocaleString('id-ID'); el.style.fontSize = "2.2rem"; el.style.opacity = "1"; }
     }
 
     function applyDynamicSettings() {
-      const listDompet = appSettings.Dompet.split(',').map(item => item.trim());
-      const listKatOut = appSettings.KatPengeluaran.split(',').map(item => item.trim());
-      
+      const listDompet = appSettings.Dompet.split(',').map(item => item.trim()); const listKatOut = appSettings.KatPengeluaran.split(',').map(item => item.trim());
       const dompetHtml = listDompet.map(w => `<option value="${w}">${w}</option>`).join('');
-      document.getElementById('dompetTrx').innerHTML = dompetHtml;
-      document.getElementById('dariDompet').innerHTML = dompetHtml;
-      document.getElementById('keDompet').innerHTML = dompetHtml;
+      document.getElementById('dompetTrx').innerHTML = dompetHtml; document.getElementById('dariDompet').innerHTML = dompetHtml; document.getElementById('keDompet').innerHTML = dompetHtml;
       document.getElementById('budgetKategori').innerHTML = listKatOut.map(k => `<option value="${k}">${k}</option>`).join('');
       updateCategories();
     }
 
     function updateCategories() {
-      const tipe = getTipeTrx();
-      const listKat = tipe === 'Pengeluaran' ? appSettings.KatPengeluaran.split(',').map(item => item.trim()) : appSettings.KatPemasukan.split(',').map(item => item.trim());
+      const tipe = getTipeTrx(); const listKat = tipe === 'Pengeluaran' ? appSettings.KatPengeluaran.split(',').map(item => item.trim()) : appSettings.KatPemasukan.split(',').map(item => item.trim());
       document.getElementById('kategori').innerHTML = listKat.map(k => `<option value="${k}">${k}</option>`).join('');
     }
 
     function verifyPIN() {
       const pin = document.getElementById('pinInput').value;
-      if(pin === appSettings.PIN.toString()) { 
-        document.getElementById('pinOverlay').classList.add('hidden'); 
-        loadBudgetStatus(); 
-      } else { 
-        showToast('PIN Salah! Silakan coba lagi.', 'red'); 
-        document.getElementById('pinInput').value = '';
-      }
+      if(pin === appSettings.PIN.toString()) { document.getElementById('pinOverlay').classList.add('hidden'); loadBudgetStatus(); } 
+      else { showToast('PIN Salah! Silakan coba lagi.', 'red'); document.getElementById('pinInput').value = ''; }
     }
 
     function showToast(message, type = 'red') {
@@ -426,65 +300,70 @@
     }
 
     function openTab(tabId, element) {
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById(tabId).classList.add('active'); if(element) element.classList.add('active');
     }
 
     function toggleTheme() { const html = document.documentElement; html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); }
     function togglePrivacy() { document.getElementById('appBody').classList.toggle('privacy-active'); }
 
+    // --- PENGIRIMAN DATA MENGGUNAKAN FETCH (REST API) ---
     function submitTransaction(e) {
       e.preventDefault(); const btn = document.getElementById('btnSimpan'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
       const rawNominal = document.getElementById('nominalTrx').value.replace(/\./g, '');
-      const tipeTrx = getTipeTrx(); 
+      const data = { tanggal: new Date().toLocaleDateString('id-ID'), tipe: getTipeTrx(), dompet: document.getElementById('dompetTrx').value, kategori: document.getElementById('kategori').value, nominal: rawNominal, keterangan: "Input" };
       
-      const data = { tanggal: new Date().toLocaleDateString('id-ID'), tipe: tipeTrx, dompet: document.getElementById('dompetTrx').value, kategori: document.getElementById('kategori').value, nominal: rawNominal, keterangan: "Input Manual" };
-      google.script.run.withSuccessHandler(res => { 
+      callBackend('addTransaction', data).then(res => { 
         document.getElementById('nominalTrx').value = ''; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Simpan Transaksi'; btn.disabled = false; 
         updateBalanceUI(res.newNetWorth); if(data.tipe === 'Pengeluaran') loadBudgetStatus(); showToast('Transaksi berhasil dicatat!', 'green'); 
-      }).addTransaction(data);
+      });
     }
 
     function submitTransfer(e) {
       e.preventDefault(); const btn = document.getElementById('btnTransfer'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...'; btn.disabled = true;
       const rawNominal = document.getElementById('nominalTransfer').value.replace(/\./g, '');
       const data = { tanggal: new Date().toLocaleDateString('id-ID'), dariDompet: document.getElementById('dariDompet').value, keDompet: document.getElementById('keDompet').value, nominal: rawNominal, keterangan: "Transfer" };
-      google.script.run.withSuccessHandler(res => { 
+      
+      callBackend('addTransfer', data).then(res => { 
         document.getElementById('nominalTransfer').value = ''; btn.innerHTML = '<i class="fa-solid fa-money-bill-transfer"></i> Proses Transfer'; btn.disabled = false; 
         updateBalanceUI(res.newNetWorth); showToast('Transfer berhasil!', 'green'); 
-      }).addTransfer(data);
+      });
     }
 
     function submitBudget(e) {
       e.preventDefault(); const btn = document.getElementById('btnBudget'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
-      const rawNominal = document.getElementById('budgetNominal').value.replace(/\./g, '');
-      const data = { kategori: document.getElementById('budgetKategori').value, batas: rawNominal };
-      google.script.run.withSuccessHandler(res => { document.getElementById('budgetNominal').value = ''; btn.innerHTML = '<i class="fa-solid fa-plus"></i> Simpan Anggaran'; btn.disabled = false; loadBudgetStatus(); showToast('Anggaran diperbarui!', 'green'); }).saveBudget(data);
+      const data = { kategori: document.getElementById('budgetKategori').value, batas: document.getElementById('budgetNominal').value.replace(/\./g, '') };
+      
+      callBackend('saveBudget', data).then(res => { 
+        document.getElementById('budgetNominal').value = ''; btn.innerHTML = '<i class="fa-solid fa-plus"></i> Simpan Anggaran'; btn.disabled = false; loadBudgetStatus(); showToast('Anggaran diperbarui!', 'green'); 
+      });
     }
 
     function submitSettings(e) {
       e.preventDefault(); const btn = document.getElementById('btnSettings'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...'; btn.disabled = true;
       const newSettings = { PIN: document.getElementById('setPIN').value, Dompet: document.getElementById('setDompet').value, KatPengeluaran: document.getElementById('setKatOut').value, KatPemasukan: document.getElementById('setKatIn').value };
-      google.script.run.withSuccessHandler(res => { btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan'; btn.disabled = false; if(res.success) { appSettings = newSettings; applyDynamicSettings(); showToast('Pengaturan diperbarui!', 'green'); } }).saveSettings(newSettings);
+      
+      callBackend('saveSettings', newSettings).then(res => { 
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan'; btn.disabled = false; if(res.success) { appSettings = newSettings; applyDynamicSettings(); showToast('Pengaturan diperbarui!', 'green'); } 
+      });
     }
 
     function loadBudgetStatus() {
-      google.script.run.withSuccessHandler(res => {
+      callBackend('getBudgetStatus').then(res => {
         const list = document.getElementById('budgetList'); list.innerHTML = '';
         if(!res || res.length === 0) { list.innerHTML = '<div style="text-align: center; opacity: 0.6; font-size: 0.9rem; padding: 20px;">Belum ada anggaran yang diatur.</div>'; return; }
         res.forEach(b => {
-          let colorClass = 'bg-green';
-          if(b.persentase >= 100) { colorClass = 'bg-red'; showToast(`Anggaran <b>${b.kategori}</b> HABIS!`, 'red'); } else if(b.persentase >= 80) { colorClass = 'bg-yellow'; showToast(`Anggaran <b>${b.kategori}</b> sudah ${b.persentase.toFixed(1)}%`, 'yellow'); }
+          let colorClass = 'bg-green'; if(b.persentase >= 100) { colorClass = 'bg-red'; showToast(`Anggaran <b>${b.kategori}</b> HABIS!`, 'red'); } else if(b.persentase >= 80) { colorClass = 'bg-yellow'; showToast(`Anggaran <b>${b.kategori}</b> sudah ${b.persentase.toFixed(1)}%`, 'yellow'); }
           list.innerHTML += `<div class="wallet-item" style="flex-direction: column; align-items: flex-start; gap: 8px;"><div style="display:flex; justify-content: space-between; width: 100%;"><span style="font-weight: 800;"><i class="fa-solid fa-tags" style="opacity:0.6; margin-right:5px;"></i> ${b.kategori}</span><span style="font-size: 0.9rem; font-weight:700;">Rp ${b.terpakai.toLocaleString('id-ID')} <span style="opacity:0.6; font-weight:normal;">/ Rp ${b.maksimal.toLocaleString('id-ID')}</span></span></div><div class="progress-container"><div class="progress-bar ${colorClass}" style="width: ${Math.min(b.persentase, 100)}%;"></div></div><div style="font-size: 0.8rem; text-align: right; width: 100%; opacity: 0.8; margin-top:2px; font-weight: 600;">Terpakai: ${b.persentase.toFixed(1)}%</div></div>`;
         });
-      }).getBudgetStatus();
+      });
     }
 
     function fetchReport() {
       const start = document.getElementById('startDate').value; const end = document.getElementById('endDate').value; const btn = document.getElementById('btnFilter');
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memuat...'; btn.disabled = true;
-      google.script.run.withSuccessHandler(res => {
+      
+      callBackend('getReportData', {start: start, end: end}).then(res => {
         btn.innerHTML = '<i class="fa-solid fa-filter"></i> Tampilkan Laporan'; btn.disabled = false; if(!res.success) return;
         const list = document.getElementById('reportList'); list.innerHTML = '';
         if(res.data.length === 0) { list.innerHTML = `<div style="text-align: center; padding: 30px 0; opacity: 0.6;"><p style="margin:0; font-size: 0.9rem; font-weight: 600;">Tidak ada transaksi di rentang tanggal ini.</p></div>`; return; }
@@ -492,7 +371,7 @@
           const isIncome = trx.tipe === 'Pemasukan'; const colorClass = isIncome ? 'text-green' : 'text-red'; const sign = isIncome ? '+' : '-'; const icon = isIncome ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
           list.innerHTML += `<div class="wallet-item" style="margin-bottom: 8px;"><div class="trx-detail"><h5 style="margin: 0 0 6px 0; font-size: 1.05rem; font-weight: 800;" class="trx-amount"><i class="fa-solid ${icon}" style="color: ${isIncome?'#10b981':'#ef4444'}; margin-right:8px;"></i> ${trx.kategori}</h5><p style="margin: 0; font-size: 0.85rem; font-weight: 600; opacity: 0.7;"><i class="fa-regular fa-calendar"></i> ${trx.tanggal} &nbsp;•&nbsp; <i class="fa-solid fa-wallet"></i> ${trx.dompet}</p></div><div style="font-weight: 800; font-size: 1.15rem;" class="trx-amount ${colorClass}">${sign} Rp ${Number(trx.nominal).toLocaleString('id-ID')}</div></div>`;
         });
-      }).getReportData(start, end);
+      });
     }
   </script>
 </body>
