@@ -359,19 +359,20 @@
       });
     }
 
-// --- FUNGSI JEMBATAN KE GOOGLE SCRIPT (DIPERKUAT ANTI-CORS) ---
-    function callBackend(actionName, dataPayload = null) {
-      if(API_URL === "MASUKKAN_URL_WEB_APP_DI_SINI") {
-        alert("PERHATIAN: URL Web App Google Script belum dimasukkan ke dalam file HTML!");
-        return Promise.reject("URL missing");
-      }
+    function fetchReport() {
+      const start = document.getElementById('startDate').value; const end = document.getElementById('endDate').value; const btn = document.getElementById('btnFilter');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memuat...'; btn.disabled = true;
       
-      return fetch(API_URL, {
-        method: 'POST',
-        redirect: 'follow', // Penting agar Google Script bisa merespon
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8" // Wajib text/plain agar tidak kena blokir CORS Preflight
-        },
-        body: JSON.stringify({ action: actionName, data: dataPayload })
-      }).then(res => res.json());
+      callBackend('getReportData', {start: start, end: end}).then(res => {
+        btn.innerHTML = '<i class="fa-solid fa-filter"></i> Tampilkan Laporan'; btn.disabled = false; if(!res.success) return;
+        const list = document.getElementById('reportList'); list.innerHTML = '';
+        if(res.data.length === 0) { list.innerHTML = `<div style="text-align: center; padding: 30px 0; opacity: 0.6;"><p style="margin:0; font-size: 0.9rem; font-weight: 600;">Tidak ada transaksi di rentang tanggal ini.</p></div>`; return; }
+        res.data.forEach(trx => {
+          const isIncome = trx.tipe === 'Pemasukan'; const colorClass = isIncome ? 'text-green' : 'text-red'; const sign = isIncome ? '+' : '-'; const icon = isIncome ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
+          list.innerHTML += `<div class="wallet-item" style="margin-bottom: 8px;"><div class="trx-detail"><h5 style="margin: 0 0 6px 0; font-size: 1.05rem; font-weight: 800;" class="trx-amount"><i class="fa-solid ${icon}" style="color: ${isIncome?'#10b981':'#ef4444'}; margin-right:8px;"></i> ${trx.kategori}</h5><p style="margin: 0; font-size: 0.85rem; font-weight: 600; opacity: 0.7;"><i class="fa-regular fa-calendar"></i> ${trx.tanggal} &nbsp;•&nbsp; <i class="fa-solid fa-wallet"></i> ${trx.dompet}</p></div><div style="font-weight: 800; font-size: 1.15rem;" class="trx-amount ${colorClass}">${sign} Rp ${Number(trx.nominal).toLocaleString('id-ID')}</div></div>`;
+        });
+      });
     }
+  </script>
+</body>
+</html>
